@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Getting Started with Chart JS with www.chartjs3.com</title>
+    <style>
+    * body {
+      width: 100vw;
+      height: 100vh;
+    }
+    </style>
+  </head>
+  <body>
+   
+    <div>
+     
+        <canvas id="canvas"></canvas>
+     
+    </div>
+   
+    <script type="text/javascript" src="https://unpkg.com/chart.js@4"></script>
+
+		<script type="text/javascript" src="https://unpkg.com/chartjs-chart-geo@4"></script>
+    <script>
+    fetch('https://unpkg.com/world-atlas/countries-50m.json').then((r) => r.json()).then((data) => {
+      const countries = ChartGeo.topojson.feature(data, data.objects.countries).features;
+      const chart = new Chart(document.getElementById("canvas").getContext("2d"), {
+        type: 'choropleth',
+        data: {
+          labels: countries.map((d) => d.properties.name),
+      datasets: [{
+        label: 'Countries',
+        data: countries.map((d) => ({feature: d, value: Math.random()})), }]},
+    options: {
+      showOutline: true,
+      showGraticule: true,
+      plugins: {
+        legend: {
+          display: false
+        },
+      },
+      scales: {
+        projection: {
+          axis: 'x',
+          projection: 'equalEarth'
+        }
+      }
+    }
+  });
+});
+</script>
+  </body>
+  
+</html>
